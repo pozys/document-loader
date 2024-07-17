@@ -1,0 +1,24 @@
+meta:
+  type: UTD
+
+schema:
+  string_property:
+    type: string
+  number_property:
+    type: integer
+  object_property:
+    type: object
+    properties:
+      string_property:
+        type: string
+      number_property:
+        type: integer
+  array_property:
+    type: array
+    items:
+      type: object
+      properties:
+        string_property:
+          type: string
+        number_property:
+          type: integer

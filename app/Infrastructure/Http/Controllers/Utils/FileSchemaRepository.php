@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Http\Controllers\Utils;
 
 use App\Domain\Enums\DocumentTypes;
-use App\Domain\Interfaces\SchemaProviderInterface;
+use App\Domain\Interfaces\SchemaRepositoryInterface;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-class FileSchemaProvider implements SchemaProviderInterface
+class FileSchemaRepository implements SchemaRepositoryInterface
 {
     private string $schemaCatalog;
 

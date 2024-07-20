@@ -14,10 +14,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('document_type');
+            $table->string('document_format');
             $table->foreignId('user_id');
             $table->jsonb('settings');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['document_type', 'document_format', 'user_id']);
         });
     }
 

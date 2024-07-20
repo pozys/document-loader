@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Http\Controllers;
 
-use App\Http\Requests\StoreSettingRequest;
-use App\Http\Requests\UpdateSettingRequest;
-use App\Setting;
+use App\Domain\Models\Setting\Setting;
+use App\Infrastructure\Http\Requests\StoreSettingRequest;
+use App\Infrastructure\Http\Requests\UpdateSettingRequest;
 
 class SettingController
 {
@@ -24,20 +24,12 @@ class SettingController
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSettingRequest $request)
     {
-        //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Setting $setting)
     {
-        //
     }
 
     /**

@@ -6,7 +6,7 @@ namespace App\Domain\Interfaces;
 
 use App\Domain\Enums\DocumentTypes;
 
-interface SchemaProviderInterface
+interface SchemaRepositoryInterface
 {
     public function getByMeta(DocumentTypes $type): array;
 }

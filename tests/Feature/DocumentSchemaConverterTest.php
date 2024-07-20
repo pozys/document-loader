@@ -44,7 +44,7 @@ class DocumentSchemaConverterTest extends TestCase
 
         $this->assertInstanceOf(DocumentSchema::class, $result);
         $this->assertEquals(DocumentTypes::UTD, $result->getDocumentType());
-        $this->assertCount(3, $result->getComponents());
+        $this->assertCount(3, $result->getElements());
     }
 
     public function testInvalidDocumentType()

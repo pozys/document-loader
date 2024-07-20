@@ -10,7 +10,7 @@ use App\Domain\Enums\DocumentTypes;
 class DocumentSchema
 {
     private DocumentTypes $documentType;
-    private array $container = [];
+    private array $elements = [];
 
     public function setDocumentType($documentType): self
     {
@@ -21,7 +21,7 @@ class DocumentSchema
 
     public function add(AbstractSchemaComponent $component): self
     {
-        $this->container[] = $component;
+        $this->elements[] = $component;
 
         return $this;
     }
@@ -31,8 +31,8 @@ class DocumentSchema
         return $this->documentType;
     }
 
-    public function getComponents(): array
+    public function getElements(): array
     {
-        return $this->container;
+        return $this->elements;
     }
 }

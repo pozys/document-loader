@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Domain\Interfaces\SchemaRepositoryInterface;
+use App\Infrastructure\Http\Controllers\Utils\FileSchemaRepository;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(SchemaRepositoryInterface::class, FileSchemaRepository::class);
     }
 
     /**
@@ -19,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        DB::listen(function (QueryExecuted $query) {
+            Log::debug('Query: ' . $query->sql);
+            Log::debug('Time: ' . $query->time);
+        });
     }
 }

@@ -6,9 +6,9 @@ namespace App\Domain\Concerns\Enums;
 
 enum SchemaComponentTypes: string
 {
-    case Array = 'array';
+    case Collection = 'collection';
     case Float = 'float';
     case Integer = 'integer';
-    case Object = 'object';
+    case Row = 'row';
     case String = 'string';
 }

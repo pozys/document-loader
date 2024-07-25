@@ -4,38 +4,32 @@ declare(strict_types=1);
 
 namespace App\Domain\Models\Casts;
 
-use App\Domain\Factories\SettingValueFactory;
-use App\Domain\Models\Setting\Setting;
 use App\Domain\Models\Setting\ValueObjects\Settings;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
 
-class DocumentSettings
+class DocumentSettings implements CastsAttributes
 {
-    public function get(Setting $model, string $key, mixed $value, array $attributes): Settings
+    public function get(Model $model, string $key, mixed $value, array $attributes): Settings
     {
-        $settings = new Settings();
-        $rawSettings = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
-
-        foreach ($rawSettings as $key => $item) {
-            $settingValue = SettingValueFactory::make(
-                $model->getAttributeValue('document_format'),
-                $item
-            );
-
-            $settings->add($key, $settingValue);
-        }
-
-        return $settings;
+        return new Settings(
+            json_decode($value, true, 512, JSON_THROW_ON_ERROR),
+            $model->document_format
+        );
     }
 
-    public function set(Setting $model, string $key, mixed $value, array $attributes): array
+    public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
         $this->validate($value);
 
-        return ['settings' => json_encode($value, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)];
+        return $value->jsonSerialize();
     }
 
     private function validate(mixed $value): void
     {
         // TODO: validate settings
+        if (!$value instanceof Settings) {
+            throw new \InvalidArgumentException('Value must be instance of Settings');
+        }
     }
 }

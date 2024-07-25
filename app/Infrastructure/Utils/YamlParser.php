@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Http\Controllers\Utils;
+namespace App\Infrastructure\Utils;
 
 use Symfony\Component\Yaml\Yaml;
 

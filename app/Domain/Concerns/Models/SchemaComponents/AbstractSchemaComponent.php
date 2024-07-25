@@ -8,10 +8,15 @@ use App\Domain\Concerns\Enums\SchemaComponentTypes;
 
 abstract class AbstractSchemaComponent
 {
-    public function __construct(protected SchemaComponentTypes $type, protected string $name, ?array $data = null)
+    public function __construct(protected SchemaComponentTypes $type, array $data)
     {
         $this->applyData($data);
     }
 
-    abstract protected function applyData(?array $data): static;
+    public function getType(): SchemaComponentTypes
+    {
+        return $this->type;
+    }
+
+    abstract protected function applyData(array $data): static;
 }

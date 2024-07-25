@@ -29,8 +29,8 @@ class DocumentSchemaConverter
         $documentSchema = $documentSchema->setDocumentType($documentType);
 
         $schema = $this->provideSchema($data);
-        foreach ($schema as $key => $value) {
-            $component = $this->schemaComponentFactory->make($key, $value);
+        foreach ($schema as $value) {
+            $component = $this->schemaComponentFactory->make($value);
             $documentSchema = $documentSchema->add($component);
         }
 

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Infrastructure\Http\Controllers;
+namespace App\Infrastructure\Http\Controllers\Setting;
 
 use App\Domain\Models\Setting\Setting;
+use App\Domain\Models\Setting\ValueObjects\Settings;
 use App\Infrastructure\Http\Requests\StoreSettingRequest;
 use App\Infrastructure\Http\Requests\UpdateSettingRequest;
 
@@ -26,10 +27,15 @@ class SettingController
 
     public function store(StoreSettingRequest $request)
     {
+        $setting = new Setting();
+        $setting->fill($request->validated());
+        $setting->settings = new Settings($request->settings, $setting->document_format);
+        $setting->save();
     }
 
     public function show(Setting $setting)
     {
+        return $setting;
     }
 
     /**
@@ -43,9 +49,11 @@ class SettingController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(StoreSettingRequest $request, Setting $setting)
     {
-        //
+        $setting->fill($request->validated());
+        $setting->settings = new Settings($request->settings, $setting->document_format);
+        $setting->save();
     }
 
     /**

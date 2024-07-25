@@ -6,18 +6,43 @@ namespace App\Domain\Concerns\Models\SchemaComponents;
 
 class Primitive extends AbstractSchemaComponent
 {
-    public function applyData(?array $data): static
+    private string $name;
+    private bool $isControl = false;
+
+    public function applyData(array $data): static
     {
         $this->validate($data);
+        $this->setName($data);
+        $this->setIsControl($data);
 
         return $this;
     }
 
-    private function validate(?array $data): void
+    public function getName(): string
     {
-        if ($data !== null) {
+        return $this->name;
+    }
+
+    public function isControl(): bool
+    {
+        return $this->isControl;
+    }
+
+    private function setName(array $data): void
+    {
+        $this->name = $data['name'];
+    }
+
+    private function setIsControl(array $data): void
+    {
+        $this->isControl = (bool) data_get($data, 'is_control', false);
+    }
+
+    private function validate(array $data): void
+    {
+        if (!isset($data['name'])) {
             // TODO: throw exception
-            throw new \InvalidArgumentException('Cannot apply data to primitive schema component');
+            throw new \InvalidArgumentException('No name provided for primitive schema component');
         }
     }
 }

@@ -4,6 +4,26 @@ declare(strict_types=1);
 
 namespace App\Domain\Models\Documents;
 
-abstract class Document
+use App\Domain\Models\User\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Document extends Model
 {
+    use HasFactory;
+    use SoftDeletes;
+
+    protected $casts = [
+        'settings' => 'array',
+        'schema' => 'array',
+        'content' => 'array',
+        'errors' => 'array',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

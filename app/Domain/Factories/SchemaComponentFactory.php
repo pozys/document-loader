@@ -8,20 +8,20 @@ use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
 use App\Domain\Concerns\Models\SchemaComponents\Collection;
 use App\Domain\Concerns\Models\SchemaComponents\Primitive;
-use App\Domain\Concerns\Models\SchemaComponents\Structure;
+use App\Domain\Concerns\Models\SchemaComponents\Row;
 
 class SchemaComponentFactory
 {
-    public static function make(string $name, array $data): AbstractSchemaComponent
+    public static function make(array $data): AbstractSchemaComponent
     {
         self::validate($data);
 
         $type = SchemaComponentTypes::from($data['type']);
 
         return match ($type) {
-            SchemaComponentTypes::Array => new Collection($type, $name, $data),
-            SchemaComponentTypes::Object => new Structure($type, $name, $data),
-            default => new Primitive($type, $name),
+            SchemaComponentTypes::Collection => new Collection($type, $data),
+            SchemaComponentTypes::Row => new Row($type, $data),
+            default => new Primitive($type, $data),
         };
     }
 
@@ -35,7 +35,7 @@ class SchemaComponentFactory
 
         if (SchemaComponentTypes::tryFrom($type) === null) {
             // TODO: throw exception
-            throw new \InvalidArgumentException('Invalid type provided for schema component');
+            throw new \InvalidArgumentException("Invalid type - '$type' - provided for schema component");
         }
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('document_type');
             $table->string('document_format');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->index();
             $table->jsonb('settings');
             $table->timestamps();
             $table->softDeletes();

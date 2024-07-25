@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Domain\Interfaces\SchemaRepositoryInterface;
-use App\Infrastructure\Http\Controllers\Utils\FileSchemaRepository;
+use App\Infrastructure\Utils\FileSchemaRepository;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

@@ -2,23 +2,30 @@ meta:
   type: UTD
 
 schema:
-  string_property:
-    type: string
-  number_property:
-    type: integer
-  object_property:
-    type: object
+  - type: row
+    trigger:
+      text: 'Счет-фактура №'
+      position: same
+    properties:
+      number:
+        type: string
+      date:
+        type: string
+  - type: row
+    trigger:
+      text: text
+      position: before
     properties:
       string_property:
         type: string
       number_property:
         type: integer
-  array_property:
-    type: array
-    items:
-      type: object
-      properties:
-        string_property:
-          type: string
-        number_property:
-          type: integer
+  - type: collection
+    trigger:
+      text: text
+      position: before
+    properties:
+      item.string_property:
+        type: string
+      item.number_property:
+        type: integer

@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace App\Domain\Models\Setting\ValueObjects;
 
-use App\Domain\Models\Casts\DocumentSettings;
-use Illuminate\Contracts\Database\Eloquent\Castable;
+use App\Domain\Enums\DocumentFormats;
+use App\Domain\Factories\SettingValueFactory;
+use App\Domain\Interfaces\SettingValueInterface;
+use JsonSerializable;
 
-class Settings implements Castable
+class Settings implements JsonSerializable
 {
     private array $settings = [];
 
-    public function add(string $name, $value)
+    public function __construct(array $data, DocumentFormats $format)
     {
-        $this->settings[$name] = $value;
+        foreach ($data as $key => $item) {
+            $settingValue = SettingValueFactory::make($format, $item);
+            $this->add($key, $settingValue);
+        }
     }
 
-    public static function castUsing(array $arguments): string
+    public function jsonSerialize(): mixed
     {
-        return DocumentSettings::class;
+        return json_encode($this->settings, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
     }
 
     public function getSetting(string $name): mixed
     {
         return $this->settings[$name] ?? null;
+    }
+
+    private function add(string $name, SettingValueInterface $value)
+    {
+        $this->settings[$name] = $value;
     }
 }

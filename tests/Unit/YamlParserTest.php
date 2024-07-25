@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Infrastructure\Http\Controllers\Utils\YamlParser;
+use App\Infrastructure\Utils\YamlParser;
 use PHPUnit\Framework\TestCase;
 
 class YamlParserTest extends TestCase

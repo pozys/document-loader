@@ -6,7 +6,7 @@ namespace App\Domain\Models\Setting;
 
 use App\Domain\Enums\DocumentFormats;
 use App\Domain\Enums\DocumentTypes;
-use App\Domain\Models\Setting\ValueObjects\Settings;
+use App\Domain\Models\Casts\DocumentSettings;
 use App\Domain\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +28,7 @@ class Setting extends Model
     protected $casts = [
         'document_type' => DocumentTypes::class,
         'document_format' => DocumentFormats::class,
-        'settings' => Settings::class,
+        'settings' => DocumentSettings::class,
     ];
 
     public function user(): BelongsTo

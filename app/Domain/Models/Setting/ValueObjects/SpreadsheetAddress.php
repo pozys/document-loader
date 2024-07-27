@@ -13,7 +13,7 @@ final class SpreadsheetAddress implements SettingValueInterface, JsonSerializabl
 
     public function __construct(array $data)
     {
-        $this->setValue(data_get($data, 'value'));
+        $this->setValue((int) data_get($data, 'value'));
     }
 
     public function getValue(): int

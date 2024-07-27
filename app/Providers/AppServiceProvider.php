@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Domain\Interfaces\SchemaRepositoryInterface;
+use App\Domain\Models\Interfaces\SettingRepositoryInterface;
+use App\Infrastructure\Repositories\Setting\DatabaseSettingRepository;
 use App\Infrastructure\Utils\FileSchemaRepository;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(SchemaRepositoryInterface::class, FileSchemaRepository::class);
+        $this->app->bind(SettingRepositoryInterface::class, DatabaseSettingRepository::class);
     }
 
     /**

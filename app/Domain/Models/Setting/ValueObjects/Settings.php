@@ -26,6 +26,11 @@ class Settings implements JsonSerializable
         return json_encode($this->settings, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
     }
 
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
     public function getSetting(string $name): mixed
     {
         return $this->settings[$name] ?? null;

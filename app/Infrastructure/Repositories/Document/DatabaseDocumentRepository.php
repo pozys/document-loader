@@ -7,12 +7,18 @@ namespace App\Infrastructure\Repositories\Document;
 use App\Domain\Models\Documents\Document;
 use App\Domain\Models\DTO\SaveDocumentDto;
 use App\Domain\Models\Interfaces\DocumentRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class DatabaseDocumentRepository implements DocumentRepositoryInterface
 {
     public function get(int $id): Document
     {
         return Document::findOrFail($id);
+    }
+
+    public function all(): Collection
+    {
+        return Document::all();
     }
 
     public function create(SaveDocumentDto $data): Document

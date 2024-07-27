@@ -40,16 +40,11 @@
                             class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
                             {{ __('layout.nav.menu.settings') }} </a>
                     </li>
-                    {{-- <li>
-                        <a href="{{ route('task_statuses.index') }}"
-                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                            {{ __('layout.nav.menu.task_statuses') }} </a>
-                    </li>
                     <li>
-                        <a href="{{ route('labels.index') }}"
+                        <a href="{{ route('documents.index') }}"
                             class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                            {{ __('layout.nav.menu.tags') }} </a>
-                    </li> --}}
+                            {{ __('layout.nav.menu.documents') }} </a>
+                    </li>
                 </ul>
             </div>
         </div>

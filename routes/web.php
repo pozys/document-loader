@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Infrastructure\Http\Controllers\Document\CheckDocumentController;
+use App\Infrastructure\Http\Controllers\Document\DocumentController;
 use App\Infrastructure\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('settings', SettingController::class)->except(['destroy']);
+
+    Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
+    Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
+    Route::post('/documents', [CheckDocumentController::class, 'checkDocument'])->name('documents.check');
 });
 
 require __DIR__ . '/auth.php';

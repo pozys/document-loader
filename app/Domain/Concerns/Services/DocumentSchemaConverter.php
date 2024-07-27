@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Concerns\Services;
 
 use App\Domain\Concerns\Models\DocumentSchema;
+use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
 use App\Domain\Enums\DocumentTypes;
 use App\Domain\Factories\SchemaComponentFactory;
 
@@ -35,6 +36,13 @@ class DocumentSchemaConverter
         }
 
         return $documentSchema;
+    }
+
+    public function toArray(DocumentSchema $documentSchema): array
+    {
+        return collect($documentSchema->getElements())
+            ->flatMap(fn (AbstractSchemaComponent $component) => $component->getNameTypeProperties())
+            ->all();
     }
 
     private function provideMeta(array $data): array

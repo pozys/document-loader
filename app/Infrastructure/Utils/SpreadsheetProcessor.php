@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Utils;
 
+use App\Application\Interfaces\DocumentProcessorInterface;
 use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
 use App\Domain\Models\Setting\Setting;
-use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\Iterator;
-use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\ScanIteratorMode;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\{Iterator, ScanIteratorMode};
+use PhpOffice\PhpSpreadsheet\{IOFactory, Spreadsheet};
 
-class SpreadsheetProcessor
+class SpreadsheetProcessor implements DocumentProcessorInterface
 {
     public function loadFile(string $path): Spreadsheet
     {

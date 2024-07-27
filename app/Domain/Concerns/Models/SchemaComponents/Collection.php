@@ -38,6 +38,15 @@ class Collection extends AbstractSchemaComponent
         return $this->name;
     }
 
+    public function getNameTypeProperties(): array
+    {
+        return collect($this->getProperties())
+            ->mapWithKeys(fn (AbstractSchemaComponent $component) => [
+                "{$this->getName()}.{$component->getName()}" => $component->getType()
+            ])
+            ->all();
+    }
+
     private function setName(array $data): void
     {
         $this->name = $data['name'];

@@ -31,6 +31,13 @@ class Row extends AbstractSchemaComponent
         return $this->trigger;
     }
 
+    public function getNameTypeProperties(): array
+    {
+        return collect($this->getProperties())
+            ->mapWithKeys(fn (AbstractSchemaComponent $component) => [$component->getName() => $component->getType()])
+            ->all();
+    }
+
     private function validate(array $data): void
     {
         if (!isset($data['properties'])) {

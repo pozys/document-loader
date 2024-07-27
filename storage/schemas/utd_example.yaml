@@ -8,7 +8,7 @@ schema:
       position: same
     properties:
       - name: string_property1
-        type: string
+        type: integer
       - name: number_property1
         type: integer
   - type: row
@@ -17,7 +17,7 @@ schema:
       position: same
     properties:
       - name: string_property2
-        type: string
+        type: integer
   - type: collection
     name: items
     trigger:
@@ -25,7 +25,7 @@ schema:
       position: before
     properties:
       - name: code
-        type: string
+        type: integer
         is_control: true
       - name: name
-        type: string
+        type: integer

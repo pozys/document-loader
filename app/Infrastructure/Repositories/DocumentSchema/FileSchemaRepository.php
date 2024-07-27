@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Utils;
+namespace App\Infrastructure\Repositories\DocumentSchema;
 
+use App\Domain\Concerns\Models\DocumentSchema;
+use App\Domain\Concerns\Services\DocumentSchemaConverter;
 use App\Domain\Enums\DocumentTypes;
 use App\Domain\Interfaces\SchemaRepositoryInterface;
+use App\Infrastructure\Utils\YamlParser;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -13,7 +16,7 @@ class FileSchemaRepository implements SchemaRepositoryInterface
 {
     private string $schemaCatalog;
 
-    public function __construct(private YamlParser $parser)
+    public function __construct(private YamlParser $parser, private readonly DocumentSchemaConverter $converter)
     {
         $schemaCatalog = env('SCHEMA_CATALOG');
 
@@ -25,11 +28,13 @@ class FileSchemaRepository implements SchemaRepositoryInterface
         $this->schemaCatalog = storage_path($schemaCatalog);
     }
 
-    public function getByMeta(DocumentTypes $type): array
+    public function getByMeta(DocumentTypes $type): DocumentSchema
     {
         $file = $this->find($type);
 
-        return $this->parser->parseFile($file);
+        $schema = $this->parser->parseFile($file);
+
+        return $this->convertToDocumentSchema($schema);
     }
 
     private function find(DocumentTypes $type): string
@@ -79,5 +84,10 @@ class FileSchemaRepository implements SchemaRepositoryInterface
     private function getFiles(): array
     {
         return File::files($this->schemaCatalog);
+    }
+
+    private function convertToDocumentSchema(array $raw): DocumentSchema
+    {
+        return $documentSchema = $this->converter->toDocumentSchema($raw);
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Infrastructure\Http\Controllers\Setting;
 
+use App\Application\DTO\StoreSettingRequest as StoreSettingDTO;
+use App\Application\UseCases\StoreSettingUseCase;
 use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use App\Domain\Concerns\Services\DocumentSchemaConverter;
-use App\Domain\Enums\DocumentFormats;
-use App\Domain\Enums\DocumentTypes;
+use App\Domain\Enums\{DocumentFormats, DocumentTypes};
 use App\Domain\Interfaces\SchemaRepositoryInterface;
 use App\Domain\Models\Interfaces\SettingRepositoryInterface;
 use App\Domain\Models\Setting\Setting;
-use App\Domain\Models\Setting\ValueObjects\Settings;
 use App\Infrastructure\Http\Controllers\Controller;
 use App\Infrastructure\Http\Requests\StoreSettingRequest;
 use Illuminate\Contracts\View\View;
@@ -20,7 +20,8 @@ class SettingController extends Controller
     public function __construct(
         private readonly SettingRepositoryInterface $repository,
         private readonly SchemaRepositoryInterface $schemaProvider,
-        private readonly DocumentSchemaConverter $converter
+        private readonly DocumentSchemaConverter $converter,
+        private readonly StoreSettingUseCase $storeSettingUseCase
     ) {
     }
 
@@ -48,12 +49,11 @@ class SettingController extends Controller
         return view('settings.create', compact('documentTypes', 'documentFormats', 'schemaElements'));
     }
 
-    public function store(StoreSettingRequest $request)
+    public function store(StoreSettingRequest $request): RedirectResponse
     {
-        $setting = new Setting();
-        $setting->fill($request->validated());
-        $setting->settings = new Settings($request->settings, $setting->document_format);
-        $setting->save();
+        $this->storeSettingUseCase->execute($this->makeStoreSettingDtoFromRequest($request));
+
+        return redirect()->route('settings.index');
     }
 
     public function show(Setting $setting): View
@@ -77,15 +77,32 @@ class SettingController extends Controller
         $settings = collect($setting->settings->getSettings())
             ->mapWithKeys(fn ($setting, $name) => [$name => $setting->getValue()])->all();
 
-        return view('settings.edit', compact('documentTypes', 'documentFormats', 'setting', 'settings', 'schemaElements'));
+        return view(
+            'settings.edit',
+            compact('documentTypes', 'documentFormats', 'setting', 'settings', 'schemaElements')
+        );
     }
 
     public function update(StoreSettingRequest $request, Setting $setting): RedirectResponse
     {
-        $setting->fill($request->validated());
-        $setting->settings = new Settings($request->settings, $setting->document_format);
-        $setting->save();
+        $this->storeSettingUseCase->execute($this->makeStoreSettingDtoFromRequest($request, $setting));
 
         return redirect()->route('settings.index');
+    }
+
+    private function makeStoreSettingDtoFromRequest(
+        StoreSettingRequest $request,
+        ?Setting $setting = null
+    ): StoreSettingDTO {
+        $validated = $request->validated();
+
+        return new StoreSettingDTO(
+            $validated['name'],
+            $validated['document_type'],
+            $validated['document_format'],
+            $validated['user_id'],
+            $validated['settings'],
+            $setting
+        );
     }
 }

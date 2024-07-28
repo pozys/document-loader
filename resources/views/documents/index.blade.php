@@ -11,6 +11,23 @@
                             {{ __('document.index.create') }}</a>
                     </div>
                 </div>
+
+                <table class="mt-4">
+                    <thead class="border-b-2 border-solid border-black text-left">
+                        <tr>
+                            <th>{{ __('document.author') }}</th>
+                            <th>{{ __('document.created_at') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($documents as $document)
+                        <tr class="border-b border-dashed text-left">
+                            <td>{{ $document->author->name }}</td>
+                            <td>{{ $document->created_at->format('d.m.Y H:m') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>

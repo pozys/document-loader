@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Models\DTO;
+namespace App\Domain\DTO;
 
 use App\Domain\Concerns\Models\DocumentSchema;
 use App\Domain\Models\Setting\Setting;

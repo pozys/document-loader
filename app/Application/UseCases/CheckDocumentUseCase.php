@@ -6,8 +6,12 @@ namespace App\Application\UseCases;
 
 use App\Application\DTO\{CheckDocumentRequest, CheckDocumentResponse};
 use App\Application\Interfaces\DocumentProcessorInterface;
-use App\Domain\Models\Documents\Document;
-use App\Domain\Models\DTO\SaveDocumentDto;
+use App\Application\Services\DocumentCheckReportGenerator;
+use App\Domain\DTO\ParsedDocumentDto;
+use App\Domain\Models\Documents\UTD\{UTDSummaryProvider, UTDValidator};
+use App\Domain\DTO\SaveDocumentDto;
+use App\Domain\Models\Documents\DocumentReport;
+use App\Domain\Models\Documents\ValueObjects\{SummaryLine, ValidationError};
 use App\Domain\Models\Interfaces\DocumentRepositoryInterface;
 
 class CheckDocumentUseCase
@@ -26,23 +30,40 @@ class CheckDocumentUseCase
             ...$request->documentSchema->getElements()
         );
 
-        $errors = $this->validateDocument($parsedDocument);
+        $report = $this->provideReport($parsedDocument);
 
-        $documentDto = new SaveDocumentDto($request->setting, $request->documentSchema, $parsedDocument, $errors);
+        $documentDto = new SaveDocumentDto(
+            $request->setting,
+            $request->documentSchema,
+            $parsedDocument->content,
+            $report->errors
+        );
+
         $document = $this->repository->create($documentDto);
 
-        return $this->createResponse($document);
+        return $this->createResponse($document->id, $report);
     }
 
-    private function validateDocument(array $document): array
+    private function provideReport(ParsedDocumentDto $document): DocumentReport
     {
-        return [];
+        $reportGenerator = new DocumentCheckReportGenerator(app(UTDSummaryProvider::class), app(UTDValidator::class));
+
+        return $reportGenerator->generate($document);
     }
 
-    private function createResponse(Document $document): CheckDocumentResponse
+    private function createResponse(int $id, DocumentReport $report): CheckDocumentResponse
     {
-        $response = new CheckDocumentResponse($document->content, $document->errors);
+        $summary = collect($report->summary->getAttributes())
+            ->flatten()
+            ->mapWithKeys(
+                fn (SummaryLine $summaryLine) => [$summaryLine->parameter => $summaryLine->value]
+            )->all();
 
-        return $response;
+        $errors = collect($report->errors)
+            ->mapWithKeys(
+                fn (ValidationError $error) => [$error->parameter => $error->message]
+            )->all();
+
+        return new CheckDocumentResponse($id, $summary, $errors);
     }
 }

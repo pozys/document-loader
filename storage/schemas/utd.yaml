@@ -7,19 +7,19 @@ schema:
       text: 'Счет-фактура №'
       position: same
     properties:
-      - name: string_property1
+      - name: number
         type: integer
-      - name: number_property1
+      - name: date
         type: integer
   - type: row
     trigger:
       text: 'Грузополучатель и его адрес:'
       position: same
     properties:
-      - name: string_property2
+      - name: consignee_with_address
         type: integer
   - type: collection
-    name: items
+    name: goods
     trigger:
       text: А
       position: before
@@ -28,4 +28,21 @@ schema:
         type: integer
         is_control: true
       - name: name
+        type: integer
+      - name: amount
+        type: integer
+      - name: vat
+        type: integer
+      - name: amount_with_vat
+        type: integer
+  - type: row
+    trigger:
+      text: 'Всего к оплате'
+      position: same
+    properties:
+      - name: amount
+        type: integer
+      - name: vat
+        type: integer
+      - name: amount_with_vat
         type: integer

@@ -6,7 +6,7 @@ namespace App\Application\DTO;
 
 class CheckDocumentResponse
 {
-    public function __construct(public readonly array $parsedDocument, public readonly array $errors)
+    public function __construct(public readonly int $id, public readonly array $summary, public readonly array $errors)
     {
     }
 }

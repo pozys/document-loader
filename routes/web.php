@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Infrastructure\Http\Controllers\Document\CheckDocumentController;
-use App\Infrastructure\Http\Controllers\Document\DocumentController;
+use App\Infrastructure\Http\Controllers\Document\{CheckDocumentController, DocumentController};
 use App\Infrastructure\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +22,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
     Route::get('/documents/create', [DocumentController::class, 'create'])->name('documents.create');
+    Route::get('/documents/check-result', [CheckDocumentController::class, 'checkResult'])->name('documents.check-result');
+    Route::post('/documents/send/{id}', [DocumentController::class, 'send'])->name('documents.send');
     Route::post('/documents', [CheckDocumentController::class, 'checkDocument'])->name('documents.check');
 });
 

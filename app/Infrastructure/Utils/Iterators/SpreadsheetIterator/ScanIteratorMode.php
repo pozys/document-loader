@@ -29,8 +29,6 @@ class ScanIteratorMode extends IteratorMode
 
             $found = $this->iterator->find($element, $setting, $trigger);
 
-            $this->iterator->toNextRow();
-
             return $found;
         }
 

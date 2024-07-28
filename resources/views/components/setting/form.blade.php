@@ -35,7 +35,7 @@
         </div>
         <div>
             @foreach ($schemaElements as $name => $htmlType)
-            <div>
+            <div class="mt-2">
                 <p><span class="font-black">{{ __($name) }}:</span> {{
                     html()->$htmlType("settings[{$name}][value]", $settings[$name] ?? null)->class('rounded
                     border-gray-300 w-1/3') }}

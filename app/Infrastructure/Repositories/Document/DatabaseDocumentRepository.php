@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories\Document;
 
 use App\Domain\Models\Documents\Document;
-use App\Domain\Models\DTO\SaveDocumentDto;
+use App\Domain\DTO\SaveDocumentDto;
 use App\Domain\Models\Interfaces\DocumentRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;

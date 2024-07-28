@@ -12,6 +12,7 @@ use App\Infrastructure\Utils\SpreadsheetProcessor;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\{RedirectResponse, Request};
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
 class CheckDocumentController
 {
@@ -34,9 +35,8 @@ class CheckDocumentController
 
     public function checkResult(Request $request): View
     {
-        $request->session()->keep(['response']);
-        $response = session('response');
+        Session::keep(['response']);
 
-        return view('documents.check-result', compact('response'));
+        return view('documents.check-result', ['response' => session('response')]);
     }
 }

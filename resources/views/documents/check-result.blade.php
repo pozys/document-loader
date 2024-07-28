@@ -11,10 +11,10 @@
                 <div class="mt-2">
                     <p>{{ html()->span( __('utd.number'))->class('font-black') }}:
                         {{ html()->input()->value($summary['number'])->class('rounded border-gray-300
-                        w-1/2')->isReadonly() }}
+                        w-1/4')->isReadonly() }}
                         {{ html()->span( __('utd.date'))->class('font-black') }}:
                         {{ html()->input()->value($summary['date'])->class('rounded border-gray-300
-                        w-1/2')->isReadonly() }}
+                        w-1/4')->isReadonly() }}
                     </p>
                 </div>
                 <div class="mt-2">
@@ -61,7 +61,7 @@
                     <div class="mt-2">
                         <p>{{ html()->span( __('utd.goods_count'))->class('font-black') }}:
                             {{ html()->input()->value($summary['goods_count'])->class('rounded border-gray-300
-                            w-1/2')->isReadonly()
+                            w-1/4')->isReadonly()
                             }}
                         </p>
                     </div>

@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Http\Controllers\Setting;
 
-use App\Application\DTO\StoreSettingRequest as StoreSettingDTO;
+use App\Application\DTO\SaveSettingRequest;
 use App\Application\UseCases\StoreSettingUseCase;
 use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use App\Domain\Concerns\Services\DocumentSchemaConverter;
@@ -60,7 +60,7 @@ class SettingController extends Controller
 
     public function store(StoreSettingRequest $request): RedirectResponse
     {
-        $this->storeSettingUseCase->execute($this->makeStoreSettingDtoFromRequest($request));
+        $this->storeSettingUseCase->execute($this->makeSaveSettingDtoFromRequest($request));
 
         return redirect()->route('settings.index');
     }
@@ -102,24 +102,22 @@ class SettingController extends Controller
 
     public function update(StoreSettingRequest $request, Setting $setting): RedirectResponse
     {
-        $this->storeSettingUseCase->execute($this->makeStoreSettingDtoFromRequest($request, $setting));
+        $this->storeSettingUseCase->execute($setting->id, $this->makeSaveSettingDtoFromRequest($request, $setting));
 
         return redirect()->route('settings.index');
     }
 
-    private function makeStoreSettingDtoFromRequest(
+    private function makeSaveSettingDtoFromRequest(
         StoreSettingRequest $request,
-        ?Setting $setting = null
-    ): StoreSettingDTO {
+    ): SaveSettingRequest {
         $validated = $request->validated();
 
-        return new StoreSettingDTO(
+        return new SaveSettingRequest(
             $validated['name'],
             $validated['document_type'],
             $validated['document_format'],
             $validated['user_id'],
             $validated['settings'],
-            $setting
         );
     }
 }

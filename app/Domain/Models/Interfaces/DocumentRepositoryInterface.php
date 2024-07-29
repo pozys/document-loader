@@ -12,6 +12,6 @@ interface DocumentRepositoryInterface
 {
     public function get(int $id): Document;
     public function all(): Collection;
-    public function create(SaveDocumentDto $document): Document;
+    public function store(SaveDocumentDto $document): Document;
     public function update(int $id, SaveDocumentDto $document): Document;
 }

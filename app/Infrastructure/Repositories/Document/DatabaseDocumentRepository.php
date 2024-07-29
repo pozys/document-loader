@@ -22,7 +22,7 @@ class DatabaseDocumentRepository implements DocumentRepositoryInterface
         return Document::all();
     }
 
-    public function create(SaveDocumentDto $data): Document
+    public function store(SaveDocumentDto $data): Document
     {
         $document = app(Document::class);
         $document = $this->fill($document, $data);

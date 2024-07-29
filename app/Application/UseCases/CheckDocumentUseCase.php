@@ -39,7 +39,7 @@ class CheckDocumentUseCase
             $report->errors
         );
 
-        $document = $this->repository->create($documentDto);
+        $document = $this->repository->store($documentDto);
 
         return $this->createResponse($document->id, $report);
     }

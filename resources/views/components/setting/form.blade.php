@@ -5,7 +5,7 @@
     {{ html()->hidden('user_id', $setting?->user_id ?? auth()->user()->id) }}
     <div class="flex flex-col">
         <div>
-            {{ html()->label( __('setting.name'), 'setting') }}
+            {{ html()->label( __('setting.name'), 'setting')->class('font-black') }}
         </div>
         <div class="mt-2">
             {{ html()->text('name')->class('rounded border-gray-300 w-1/3')->required() }}
@@ -14,7 +14,7 @@
             @enderror
         </div>
         <div class="mt-2">
-            {{ html()->label( __('setting.document_type'), 'document_type') }}
+            {{ html()->label( __('setting.document_type'), 'document_type')->class('font-black') }}
         </div>
         <div>
             {{ html()->select('document_type', $documentTypes)
@@ -24,7 +24,7 @@
             @enderror
         </div>
         <div class="mt-2">
-            {{ html()->label( __('setting.document_format'), 'document_format') }}
+            {{ html()->label( __('setting.document_format'), 'document_format')->class('font-black') }}
         </div>
         <div>
             {{ html()->select('document_format', $documentFormats)

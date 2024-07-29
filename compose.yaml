@@ -1,0 +1,57 @@
+services:
+  application:
+    build:
+      context: .
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+    command: ["php-fpm"]
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - 5173:5173
+    command: ["make", "start-frontend"]
+    networks:
+      - app-network
+
+  webserver:
+    image: nginx
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - .:/app
+      - ./external/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - app-network
+
+  database:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - loader-pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  loader-pgdata:
+
+networks:
+  app-network:
+    driver: bridge

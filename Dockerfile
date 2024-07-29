@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip
 
-RUN docker-php-ext-install pdo pdo_pgsql zip gd
+RUN docker-php-ext-install pdo pdo_pgsql zip gd mbstring exif pcntl
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
@@ -34,6 +34,8 @@ RUN apt-get install -y nodejs
 WORKDIR /app
 
 COPY . .
+
+COPY ./external/xdebug/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN usermod -u ${USER_ID} ${USER_NAME}
 RUN groupmod -g ${USER_ID} ${GROUP_NAME}

@@ -34,8 +34,16 @@ class SettingController extends Controller
 
     public function create(): View
     {
-        $documentTypes = [DocumentTypes::UTD->value => DocumentTypes::UTD->value];
-        $documentFormats = [DocumentFormats::Spreadsheet->value => DocumentFormats::Spreadsheet->value];
+        $documentTypes = collect(DocumentTypes::cases())
+            ->mapWithKeys(
+                fn (DocumentTypes $type) => [$type->value => __("enums.document_types.{$type->value}")]
+            );
+
+        $documentFormats = collect(DocumentFormats::cases())
+            ->mapWithKeys(
+                fn (DocumentFormats $format) => [$format->value => __("enums.document_formats.{$format->value}")]
+            );
+
         $documentSchema = $this->schemaProvider->getByMeta(DocumentTypes::UTD, DocumentFormats::Spreadsheet);
         $schemaElements = collect($this->converter->toArray($documentSchema))
             ->map(function (SchemaComponentTypes $type) {
@@ -45,8 +53,9 @@ class SettingController extends Controller
                     default => throw new \InvalidArgumentException('Unsupported schema component type'),
                 };
             })->all();
+        $type = DocumentTypes::UTD;
 
-        return view('settings.create', compact('documentTypes', 'documentFormats', 'schemaElements'));
+        return view('settings.create', compact('documentTypes', 'documentFormats', 'schemaElements', 'type'));
     }
 
     public function store(StoreSettingRequest $request): RedirectResponse
@@ -63,8 +72,16 @@ class SettingController extends Controller
 
     public function edit(Setting $setting): View
     {
-        $documentTypes = [DocumentTypes::UTD->value => DocumentTypes::UTD->value];
-        $documentFormats = [DocumentFormats::Spreadsheet->value => DocumentFormats::Spreadsheet->value];
+        $documentTypes = collect(DocumentTypes::cases())
+            ->mapWithKeys(
+                fn (DocumentTypes $type) => [$type->value => __("enums.document_types.{$type->value}")]
+            );
+
+        $documentFormats = collect(DocumentFormats::cases())
+            ->mapWithKeys(
+                fn (DocumentFormats $format) => [$format->value => __("enums.document_formats.{$format->value}")]
+            );
+
         $documentSchema = $this->schemaProvider->getByMeta(DocumentTypes::UTD, DocumentFormats::Spreadsheet);
         $schemaElements = collect($this->converter->toArray($documentSchema))
             ->map(function (SchemaComponentTypes $type) {

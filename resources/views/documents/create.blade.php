@@ -3,7 +3,7 @@
     {{ html()->form()->route('documents.check')->acceptsFiles()->open() }}
     <div>
         <div class="mt-2">
-            {{ html()->label( __('document.setting_id'), 'setting_id') }}
+            {{ html()->label( __('document.create.setting'), 'setting_id') }}
         </div>
         {{ html()->select('setting_id', $userSettings)
         ->class('rounded border-gray-300 w-1/3')->required() }}
@@ -15,7 +15,7 @@
         {{ html()->file('file')->required() }}
     </div>
     <div class="mt-2">
-        <x-forms.submit :text="__('document.check.submit')" />
+        <x-forms.submit :text="__('document.create.submit')" />
     </div>
     {{ html()->form()->close() }}
 </x-forms.entity>

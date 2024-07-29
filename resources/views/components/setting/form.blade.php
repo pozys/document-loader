@@ -34,9 +34,13 @@
             @enderror
         </div>
         <div>
+            @php
+            $type=$setting?->document_type ?? $type;
+            @endphp
             @foreach ($schemaElements as $name => $htmlType)
             <div class="mt-2">
-                <p><span class="font-black">{{ __($name) }}:</span> {{
+                <p><span class="font-black">{{ __("setting-properties.{$type->value}.{$name}")
+                        }}:</span> {{
                     html()->$htmlType("settings[{$name}][value]", $settings[$name] ?? null)->class('rounded
                     border-gray-300 w-1/3') }}
                 </p>

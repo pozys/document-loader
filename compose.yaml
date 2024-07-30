@@ -5,23 +5,10 @@ services:
     restart: unless-stopped
     volumes:
       - .:/app
-    depends_on:
-      - database
-    command: ["php-fpm"]
-    networks:
-      - app-network
-
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    tty: true
-    volumes:
-      - .:/app
     ports:
       - 5173:5173
-    command: ["make", "build-frontend"]
+    depends_on:
+      - database
     networks:
       - app-network
 

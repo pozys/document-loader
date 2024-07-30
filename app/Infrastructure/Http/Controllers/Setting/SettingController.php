@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Http\Controllers\Setting;
 
 use App\Application\DTO\SaveSettingRequest;
-use App\Application\UseCases\StoreSettingUseCase;
+use App\Application\UseCases\{StoreSettingUseCase, UpdateSettingUseCase};
 use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use App\Domain\Concerns\Services\DocumentSchemaConverter;
 use App\Domain\Enums\{DocumentFormats, DocumentTypes};
@@ -18,16 +18,14 @@ use Illuminate\Http\RedirectResponse;
 class SettingController extends Controller
 {
     public function __construct(
-        private readonly SettingRepositoryInterface $repository,
         private readonly SchemaRepositoryInterface $schemaProvider,
         private readonly DocumentSchemaConverter $converter,
-        private readonly StoreSettingUseCase $storeSettingUseCase
     ) {
     }
 
-    public function index(): View
+    public function index(SettingRepositoryInterface $repository): View
     {
-        $settings = $this->repository->all();
+        $settings = $repository->all();
 
         return view('settings.index', compact('settings'));
     }
@@ -58,9 +56,9 @@ class SettingController extends Controller
         return view('settings.create', compact('documentTypes', 'documentFormats', 'schemaElements', 'type'));
     }
 
-    public function store(StoreSettingRequest $request): RedirectResponse
+    public function store(StoreSettingRequest $request, StoreSettingUseCase $storeSettingUseCase): RedirectResponse
     {
-        $this->storeSettingUseCase->execute($this->makeSaveSettingDtoFromRequest($request));
+        $storeSettingUseCase->execute($this->makeSaveSettingDtoFromRequest($request));
 
         return redirect()->route('settings.index');
     }
@@ -100,9 +98,12 @@ class SettingController extends Controller
         );
     }
 
-    public function update(StoreSettingRequest $request, Setting $setting): RedirectResponse
-    {
-        $this->storeSettingUseCase->execute($setting->id, $this->makeSaveSettingDtoFromRequest($request, $setting));
+    public function update(
+        StoreSettingRequest $request,
+        Setting $setting,
+        UpdateSettingUseCase $updateSettingUseCase
+    ): RedirectResponse {
+        $updateSettingUseCase->execute($setting->id, $this->makeSaveSettingDtoFromRequest($request, $setting));
 
         return redirect()->route('settings.index');
     }

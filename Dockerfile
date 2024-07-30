@@ -40,7 +40,9 @@ COPY ./external/xdebug/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebu
 RUN usermod -u ${USER_ID} ${USER_NAME}
 RUN groupmod -g ${USER_ID} ${GROUP_NAME}
 RUN chown -R ${USER_NAME}:${GROUP_NAME} /app && \
-    chown -R ${USER_NAME}:${GROUP_NAME} /tmp
+    chown -R ${USER_NAME}:${GROUP_NAME} /tmp && \
+    chmod 755 /app/storage && \
+    chmod 755 /app/bootstrap/cache
 
 RUN composer install
 RUN npm ci

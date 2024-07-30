@@ -41,8 +41,8 @@ RUN usermod -u ${USER_ID} ${USER_NAME}
 RUN groupmod -g ${USER_ID} ${GROUP_NAME}
 RUN chown -R ${USER_NAME}:${GROUP_NAME} /app && \
     chown -R ${USER_NAME}:${GROUP_NAME} /tmp && \
-    chmod 755 /app/storage && \
-    chmod 755 /app/bootstrap/cache
+    chmod -R guo+w /app/storage && \
+    chmod -R guo+w /app/bootstrap/cache
 
 RUN composer install
 RUN npm ci

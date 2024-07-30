@@ -43,3 +43,6 @@ test:
 
 start-frontend:
 	npm run dev
+
+build-frontend:
+	npm run build

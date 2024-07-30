@@ -2,27 +2,30 @@
 
 namespace App\Providers;
 
+use App\Application\Interfaces\DocumentLoaderInterface;
 use App\Domain\Interfaces\SchemaRepositoryInterface;
-use App\Domain\Models\Interfaces\DocumentRepositoryInterface;
-use App\Domain\Models\Interfaces\SettingRepositoryInterface;
+use App\Domain\Models\Interfaces\{DocumentRepositoryInterface, SettingRepositoryInterface};
+use App\Infrastructure\Interfaces\HttpClientInterface;
 use App\Infrastructure\Repositories\Document\DatabaseDocumentRepository;
 use App\Infrastructure\Repositories\DocumentSchema\FileSchemaRepository;
 use App\Infrastructure\Repositories\Setting\DatabaseSettingRepository;
+use App\Infrastructure\Utils\{DocumentLoaderService, LaravelHttpClient};
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\{DB, Log};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
+    public $bindings = [
+        DocumentLoaderInterface::class => DocumentLoaderService::class,
+        HttpClientInterface::class => LaravelHttpClient::class,
+        SchemaRepositoryInterface::class => FileSchemaRepository::class,
+        SettingRepositoryInterface::class => DatabaseSettingRepository::class,
+        DocumentRepositoryInterface::class => DatabaseDocumentRepository::class,
+    ];
+
     public function register(): void
     {
-        $this->app->bind(SchemaRepositoryInterface::class, FileSchemaRepository::class);
-        $this->app->bind(SettingRepositoryInterface::class, DatabaseSettingRepository::class);
-        $this->app->bind(DocumentRepositoryInterface::class, DatabaseDocumentRepository::class);
     }
 
     /**

@@ -18,6 +18,7 @@ class SendDocumentUseCase
     public function execute(int $id): void
     {
         $document = $this->repository->get($id);
+        return;
         $this->loader->sendDocument($document);
     }
 }

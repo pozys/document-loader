@@ -17,7 +17,7 @@ class DocumentLoaderService implements DocumentLoaderInterface
 
     public function sendDocument(Document $document): Response
     {
-        $endpoint = config('app.document_loader_endpoint');
+        $endpoint = config('endpoints.document_loader_endpoint');
 
         return $this->client->setUrl($endpoint)
             ->setBody($document->content)

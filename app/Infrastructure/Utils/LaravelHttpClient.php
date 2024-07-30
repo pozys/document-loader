@@ -34,7 +34,7 @@ class LaravelHttpClient implements HttpClientInterface
 
     public function setBody(array $body): self
     {
-        $this->http->withBody(json_encode($body));
+        $this->http::withBody(json_encode($body));
 
         return $this;
     }
@@ -67,10 +67,10 @@ class LaravelHttpClient implements HttpClientInterface
     public function send(string $method): Response
     {
         if ($this->headers) {
-            $this->http->withHeaders($this->headers);
+            $this->http::withHeaders($this->headers);
         }
 
-        $this->response = $this->http->send($method, $this->url);
+        $this->response = $this->http::send($method, $this->url);
 
         return $this->response;
     }

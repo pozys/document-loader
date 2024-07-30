@@ -5,9 +5,7 @@ use App\Infrastructure\Http\Controllers\Document\{CheckDocumentController, Docum
 use App\Infrastructure\Http\Controllers\Setting\SettingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::permanentRedirect('/', '/documents');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

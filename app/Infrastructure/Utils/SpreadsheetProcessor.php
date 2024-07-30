@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Utils;
 
 use App\Application\Interfaces\DocumentProcessorInterface;
-use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
 use App\Domain\DTO\ParsedDocumentDto;
+use App\Domain\Interfaces\Structuring;
 use App\Domain\Models\Setting\Setting;
 use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\{Iterator, ScanIteratorMode};
 use PhpOffice\PhpSpreadsheet\{IOFactory, Spreadsheet};
@@ -21,7 +21,7 @@ class SpreadsheetProcessor implements DocumentProcessorInterface
     public function readBySettings(
         string $path,
         Setting $setting,
-        AbstractSchemaComponent ...$schemaElements
+        Structuring ...$schemaElements
     ): ParsedDocumentDto {
         $spreadsheet = $this->loadFile($path);
         $worksheet = $spreadsheet->getActiveSheet();

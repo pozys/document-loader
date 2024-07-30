@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Utils\Iterators\SpreadsheetIterator;
 
-use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
+use App\Domain\Interfaces\Structuring;
 use App\Domain\Models\Setting\Setting;
 
 abstract class IteratorMode
@@ -16,5 +16,5 @@ abstract class IteratorMode
         $this->iterator = $iterator;
     }
 
-    abstract public function find(AbstractSchemaComponent $element, Setting $setting): array;
+    abstract public function find(Structuring $element, Setting $setting): array;
 }

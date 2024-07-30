@@ -6,8 +6,9 @@ namespace App\Domain\Concerns\Models\SchemaComponents;
 
 use App\Domain\Concerns\Models\ValueObjects\Trigger;
 use App\Domain\Factories\SchemaComponentFactory;
+use App\Domain\Interfaces\Structuring;
 
-class Row extends AbstractSchemaComponent
+class Row extends AbstractSchemaComponent implements Structuring
 {
     private array $properties = [];
     private Trigger $trigger;

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Infrastructure\Utils\Iterators\SpreadsheetIterator;
 
 use App\Domain\Concerns\Enums\TriggerPositions;
-use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
+use App\Domain\Interfaces\Structuring;
 use App\Domain\Models\Setting\Setting;
 
 class ScanIteratorMode extends IteratorMode
 {
-    public function find(AbstractSchemaComponent $element, Setting $setting): array
+    public function find(Structuring $element, Setting $setting): array
     {
         $trigger = $element->getTrigger();
 
@@ -25,7 +25,7 @@ class ScanIteratorMode extends IteratorMode
                 $this->iterator->toNextRow();
             }
 
-            $this->iterator->changeMode(new SearchIteratorMode());
+            $this->iterator->changeMode(SearchIteratorFactory::create($element));
 
             $found = $this->iterator->find($element, $setting, $trigger);
 

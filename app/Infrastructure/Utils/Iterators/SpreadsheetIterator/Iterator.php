@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Utils\Iterators\SpreadsheetIterator;
 
-use App\Domain\Concerns\Models\SchemaComponents\AbstractSchemaComponent;
+use App\Domain\Interfaces\Structuring;
 use App\Domain\Models\Setting\Setting;
 use PhpOffice\PhpSpreadsheet\Calculation\Information\ExcelError;
-use PhpOffice\PhpSpreadsheet\Cell\Cell;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
@@ -33,7 +32,7 @@ class Iterator
         $this->mode->setIterator($this);
     }
 
-    public function find(AbstractSchemaComponent $element, Setting $setting): array
+    public function find(Structuring $element, Setting $setting): array
     {
         return $this->mode->find($element, $setting);
     }

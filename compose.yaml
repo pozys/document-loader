@@ -15,6 +15,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: unless-stopped
+    tty: true
     volumes:
       - .:/app
     ports:

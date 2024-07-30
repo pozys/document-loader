@@ -1,5 +1,6 @@
 services:
   application:
+    container_name: application
     build:
       context: .
     restart: unless-stopped
@@ -30,6 +31,7 @@ services:
 
   database:
     image: postgres
+    container_name: database
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${DB_USERNAME}

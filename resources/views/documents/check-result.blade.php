@@ -9,10 +9,10 @@
                 @endphp
 
                 <div class="mt-2">
-                    <p>{{ html()->span( __('utd.number'))->class('font-black') }}:
+                    <p>{{ html()->span( __('setting-properties.UTD.number'))->class('font-black') }}:
                         {{ html()->input()->value($summary['number'])->class('rounded border-gray-300
                         w-1/4')->isReadonly() }}
-                        {{ html()->span( __('utd.date'))->class('font-black') }}:
+                        {{ html()->span( __('setting-properties.UTD.date'))->class('font-black') }}:
                         {{ html()->input()->value($summary['date'])->class('rounded border-gray-300
                         w-1/4')->isReadonly() }}
                     </p>
@@ -21,14 +21,16 @@
                     <table class="mt-4">
                         <thead class="border-b-2 border-solid border-black text-center">
                             <tr>
-                                <th>{{ __('utd.amount') }}</th>
-                                <th>{{ __('utd.vat') }}</th>
-                                <th>{{ __('utd.amount_with_vat') }}</th>
+                                <th>{{ __('setting-properties.UTD.amount') }}</th>
+                                <th>{{ __('setting-properties.UTD.vat') }}</th>
+                                <th>{{ __('setting-properties.UTD.amount_with_vat') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="3" style="text-align:center">{{ __('utd.as_is.title') }}</td>
+                                <td colspan="3" style="text-align:center">{{ __('document.check-result.UTD.as_is.title')
+                                    }}
+                                </td>
                             </tr>
                             <tr class="border-b border-dashed text-left">
                                 <td>{{ html()->input('number')->value($summary['amount_as_is'])->isReadonly() }}</td>
@@ -37,7 +39,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align:center">{{ __('utd.as_to_be.title') }}</td>
+                                <td colspan="3" style="text-align:center">{{
+                                    __('document.check-result.UTD.as_to_be.title')
+                                    }}</td>
                             </tr>
                             <tr class="border-b border-dashed text-left">
                                 <td>{{ html()->input('number')->value($summary['amount_as_to_be'])->isReadonly() }}</td>
@@ -47,7 +51,9 @@
                                     }}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align:center">{{ __('utd.diff.title') }}</td>
+                                <td colspan="3" style="text-align:center">{{ __('document.check-result.UTD.diff.title')
+                                    }}
+                                </td>
                             </tr>
                             <tr class="border-b border-dashed text-left">
                                 <td>{{ html()->input('number')->value($summary['amount_diff'])->isReadonly() }}</td>
@@ -59,7 +65,7 @@
                     </table>
 
                     <div class="mt-2">
-                        <p>{{ html()->span( __('utd.goods_count'))->class('font-black') }}:
+                        <p>{{ html()->span( __('document.check-result.UTD.goods_count'))->class('font-black') }}:
                             {{ html()->input()->value($summary['goods_count'])->class('rounded border-gray-300
                             w-1/4')->isReadonly()
                             }}

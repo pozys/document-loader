@@ -76,7 +76,7 @@ class UTDSummaryProvider extends DocumentSummaryProviderAbstract
 
     private function calculateColumnSum(Collection $data, string $column): int|float
     {
-        return $data->pluck($column)->sum();
+        return round($data->sum->$column, 2);
     }
 
     private function summarizeDiff(array $asIs, array $asToBe): array

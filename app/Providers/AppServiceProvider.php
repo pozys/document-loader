@@ -10,8 +10,9 @@ use App\Infrastructure\Repositories\Document\DatabaseDocumentRepository;
 use App\Infrastructure\Repositories\DocumentSchema\FileSchemaRepository;
 use App\Infrastructure\Repositories\Setting\DatabaseSettingRepository;
 use App\Infrastructure\Utils\{DocumentLoaderService, LaravelHttpClient};
+use App\View\Composers\SettingFormComposer;
 use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\{DB, Log};
+use Illuminate\Support\Facades\{DB, Log, View};
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -37,5 +38,7 @@ class AppServiceProvider extends ServiceProvider
             Log::debug('Query: ' . $query->sql);
             Log::debug('Time: ' . $query->time);
         });
+
+        View::composer('settings.*', SettingFormComposer::class);
     }
 }

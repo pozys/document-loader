@@ -11,4 +11,6 @@ interface Structuring
     public function getTrigger(): Trigger;
 
     public function getProperties(): array;
+
+    public function getNameTypeProperties(): array;
 }

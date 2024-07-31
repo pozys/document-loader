@@ -16,33 +16,51 @@ class DocumentSchemaConverterTest extends TestCase
         $data = [
             'meta' => ['type' => DocumentTypes::UTD->value],
             'schema' => [
-                'line1' => [
+                [
                     'type' => SchemaComponentTypes::Row->value,
                     'trigger' => ['text' => 'text', 'position' => 'same'],
                     'properties' => [
-                        'property1' => ['type' => SchemaComponentTypes::String->value],
-                        'property2' => ['type' => SchemaComponentTypes::Integer->value],
+                        [
+                            'name' => 'property1',
+                            'type' => SchemaComponentTypes::String->value,
+                        ],
+                        [
+                            'name' => 'property2',
+                            'type' => SchemaComponentTypes::Integer->value,
+                        ]
                     ]
                 ],
-                'line2' => [
+                [
                     'type' => SchemaComponentTypes::Row->value,
                     'trigger' => ['text' => 'text', 'position' => 'before'],
                     'properties' => [
-                        'property1' => ['type' => SchemaComponentTypes::String->value],
-                        'property2' => ['type' => SchemaComponentTypes::Integer->value],
+                        [
+                            'name' => 'property1',
+                            'type' => SchemaComponentTypes::String->value,
+                        ],
+                        [
+                            'name' => 'property2',
+                            'type' => SchemaComponentTypes::Integer->value,
+                        ]
                     ]
                 ],
-                'array_property' => [
+                [
                     'type' => SchemaComponentTypes::Collection->value,
-                    'items' => [
-                        'type' => SchemaComponentTypes::Row->value,
-                        'properties' => [
-                            'property1' => ['type' => SchemaComponentTypes::String->value],
-                            'property2' => ['type' => SchemaComponentTypes::Integer->value],
+                    'trigger' => ['text' => 'text', 'position' => 'before'],
+                    'name' => 'goods',
+                    'properties' => [
+                        [
+                            'name' => 'property1',
+                            'type' => SchemaComponentTypes::String->value,
+                            'is_control' => true,
+                        ],
+                        [
+                            'name' => 'property2',
+                            'type' => SchemaComponentTypes::Integer->value,
                         ]
                     ]
                 ]
-            ],
+            ]
         ];
 
         $converter = new DocumentSchemaConverter(app(SchemaComponentFactory::class));

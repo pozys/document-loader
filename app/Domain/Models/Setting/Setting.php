@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Models\Setting;
 
-use App\Domain\Enums\DocumentFormats;
-use App\Domain\Enums\DocumentTypes;
+use App\Domain\Enums\{DocumentFormats, DocumentTypes};
 use App\Domain\Models\Casts\DocumentSettings;
 use App\Domain\Models\User\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Database\Factories\SettingFactory;
+use Illuminate\Database\Eloquent\Factories\{Factory, HasFactory};
+use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Setting extends Model
 {
@@ -39,5 +38,10 @@ class Setting extends Model
     public function getSetting(string $name): mixed
     {
         return $this->settings->getSetting($name);
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return SettingFactory::new();
     }
 }

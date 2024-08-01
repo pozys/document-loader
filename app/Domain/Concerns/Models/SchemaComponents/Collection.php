@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Concerns\Models\SchemaComponents;
 
+use App\Domain\Concerns\Enums\TriggerPositions;
 use App\Domain\Concerns\Models\ValueObjects\Trigger;
 use App\Domain\Factories\SchemaComponentFactory;
 use App\Domain\Interfaces\Structuring;
@@ -57,14 +58,20 @@ class Collection extends AbstractSchemaComponent implements Structuring
     {
         $trigger = data_get($data, 'trigger');
 
-        $this->trigger = new Trigger(data_get($trigger, 'text', ''), data_get($trigger, 'position', ''));
+        $position = data_get($trigger, 'position', '');
+        $position = $position instanceof TriggerPositions ? $position->value : $position;
+
+        $this->trigger = new Trigger(data_get($trigger, 'text', ''), $position);
     }
 
     private function validate(array $data): void
     {
-        if (!isset($data['properties'])) {
+        if (
+            !(isset($data['properties']) && collect($data['properties'])
+                ->every(fn ($property) => is_array($property)))
+        ) {
             // TODO: throw exception
-            throw new \InvalidArgumentException('No properties provided for collection schema component');
+            throw new \InvalidArgumentException('No valid properties provided for collection schema component');
         }
 
         if (!isset($data['trigger'])) {

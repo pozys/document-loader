@@ -2,46 +2,37 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use Tests\TestCase;
-use App\Domain\Concerns\Services\DocumentSchemaConverter;
-use App\Domain\Concerns\Models\DocumentSchema;
-use App\Domain\Concerns\Models\SchemaComponents\Row;
 use App\Domain\Enums\DocumentFormats;
-use App\Domain\Enums\DocumentTypes;
-use App\Domain\Factories\SchemaComponentFactory;
 use App\Domain\Models\Setting\Setting;
 use App\Domain\Models\Setting\ValueObjects\Settings;
-use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\Iterator;
-use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\ScanIteratorMode;
+use App\Infrastructure\Utils\Iterators\SpreadsheetIterator\{Iterator, ScanIteratorMode};
+use Illuminate\Support\Arr;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Tests\Feature\Factories\SameRowElementFactory;
+use Tests\Feature\Factories\CollectionElementFactory;
+use Tests\Feature\Factories\RowElementFactory;
 
 class IteratorTest extends TestCase
 {
-    private readonly Worksheet $worksheet;
-    private readonly Setting $setting;
-    private readonly string $sameTriggerText;
-    private readonly string $beforeTriggerText;
-    private readonly string $collectionTriggerText;
-    private readonly string $sameRowValue;
-    private readonly string $nextRowValue;
-    private readonly string $sameRowSettingName;
+    private Worksheet $worksheet;
+    private Setting $setting;
+    private string $sameTriggerText = 'same trigger text';
+    private string $beforeTriggerText = 'before trigger text';
+    private string $collectionTriggerText = 'collection trigger text';
+    private int $sameRowValue = 94;
+    private int $nextRowValue = 32;
+    private string $sameRowSettingName = 'same_row_name';
+    private string $nextRowSettingName = 'next_row_name';
+    private string $collectionSettingName = 'collection';
+    private string $column1SettingName = 'column_1_name';
+    private string $column2SettingName = 'column_2_name';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->sameTriggerText = 'same trigger text';
-        $this->beforeTriggerText = 'before trigger text';
-        $this->collectionTriggerText = 'collection trigger text';
-        $this->sameRowValue = 94;
-        $this->nextRowValue = 32;
-        $this->sameRowSettingName = 'same_row_name';
-
-        $spreadsheet = new Spreadsheet();
-        $this->worksheet = $spreadsheet->getActiveSheet();
+        $this->worksheet = (new Spreadsheet())->getActiveSheet();
 
         $dataArray = [
             ['skip', 'skip', 'skip', 0],
@@ -52,7 +43,7 @@ class IteratorTest extends TestCase
             [$this->collectionTriggerText, 'skip', 'skip', 0],
             [11, 'skip', 13, 0],
             [21, 'skip', 23, 0],
-            ['skip', $this->sameTriggerText, 'United States', $this->sameRowValue],
+            [null, $this->sameTriggerText, 'United States', $this->sameRowValue],
             [21, 'skip', 23, 0],
         ];
 
@@ -60,19 +51,52 @@ class IteratorTest extends TestCase
 
         $this->setting = Setting::factory()->make();
         $this->setting->settings = new Settings(
-            [$this->sameRowSettingName => ['value' => 5]],
+            [
+                $this->sameRowSettingName => ['value' => 5],
+                $this->nextRowSettingName => ['value' => 3],
+                "$this->collectionSettingName.$this->column1SettingName" => ['value' => 2],
+                "$this->collectionSettingName.$this->column2SettingName" => ['value' => 4],
+            ],
             DocumentFormats::Spreadsheet
         );
     }
 
     public function testSameRowElement()
     {
-        $element = SameRowElementFactory::create($this->sameTriggerText, $this->sameRowSettingName);
+        $element = RowElementFactory::createSameRow($this->sameTriggerText, $this->sameRowSettingName);
         $iterator = new Iterator($this->worksheet, new ScanIteratorMode());
 
         $found = $iterator->find($element, $this->setting);
 
         $this->assertCount(1, $found);
         $this->assertEquals($this->sameRowValue, $found[$this->sameRowSettingName]);
+    }
+
+    public function testBeforeRowElement()
+    {
+        $element = RowElementFactory::createBeforeRow($this->beforeTriggerText, $this->nextRowSettingName);
+        $iterator = new Iterator($this->worksheet, new ScanIteratorMode());
+
+        $found = $iterator->find($element, $this->setting);
+
+        $this->assertCount(1, $found);
+        $this->assertEquals($this->nextRowValue, $found[$this->nextRowSettingName]);
+    }
+
+    public function testCollectionElement(): void
+    {
+        $element = CollectionElementFactory::create(
+            $this->collectionSettingName,
+            $this->collectionTriggerText,
+            $this->column1SettingName,
+            $this->column2SettingName
+        );
+
+        $iterator = new Iterator($this->worksheet, new ScanIteratorMode());
+
+        $found = $iterator->find($element, $this->setting);
+
+        $this->assertCount(2, $found[$this->collectionSettingName] ?? []);
+        $this->assertEquals([11, 13, 21, 23], Arr::flatten($found[$this->collectionSettingName]));
     }
 }

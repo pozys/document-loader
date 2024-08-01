@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Concerns\Models\SchemaComponents;
 
+use App\Domain\Concerns\Enums\TriggerPositions;
 use App\Domain\Concerns\Models\ValueObjects\Trigger;
 use App\Domain\Factories\SchemaComponentFactory;
 use App\Domain\Interfaces\Structuring;
@@ -56,7 +57,10 @@ class Row extends AbstractSchemaComponent implements Structuring
     {
         $trigger = data_get($data, 'trigger');
 
-        $this->trigger = new Trigger(data_get($trigger, 'text', ''), data_get($trigger, 'position', ''));
+        $position = data_get($trigger, 'position', '');
+        $position = $position instanceof TriggerPositions ? $position->value : $position;
+
+        $this->trigger = new Trigger(data_get($trigger, 'text', ''), $position);
     }
 
     private function setProperties(array $data): void

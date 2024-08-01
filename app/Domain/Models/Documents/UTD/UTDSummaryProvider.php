@@ -83,7 +83,10 @@ class UTDSummaryProvider extends DocumentSummaryProviderAbstract
     {
         $goodsDiff = $this->calculateGoodsDiff($asIs, $asToBe);
 
-        return Arr::map($goodsDiff, fn (int|float $diff, string $parameter) => new SummaryLine($parameter, $diff));
+        return collect($goodsDiff)
+            ->map(static fn (int|float $diff, string $parameter) => new SummaryLine($parameter, $diff))
+            ->values()
+            ->all();
     }
 
     private function calculateGoodsDiff(array $asIs, array $asToBe): array
@@ -110,7 +113,7 @@ class UTDSummaryProvider extends DocumentSummaryProviderAbstract
                 throw new \InvalidArgumentException("Report line with parameter '$asToBeParameter' not found");
             }
 
-            return $asIsValue - $asToBeValue;
+            return round($asIsValue - $asToBeValue, 2);
         });
     }
 

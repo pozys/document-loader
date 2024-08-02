@@ -20,6 +20,9 @@
 
                 @auth
                 <div class="flex items-center lg:order-2">
+                    <x-dropdown-link :href="route('profile.edit')">
+                        {{ __('layout.nav.profile') }}
+                    </x-dropdown-link>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
@@ -34,6 +37,7 @@
             </div>
 
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
+                @auth
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
                         <a href="{{ route('settings.index') }}"
@@ -46,6 +50,7 @@
                             {{ __('layout.nav.menu.documents') }} </a>
                     </li>
                 </ul>
+                @endauth
             </div>
         </div>
     </nav>

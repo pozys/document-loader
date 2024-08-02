@@ -6,6 +6,7 @@ return [
         'login' => 'Вход',
         'register' => 'Регистрация',
         'logout' => 'Выход',
+        'profile' => 'Профиль',
         'menu' => [
             'settings' => 'Настройки',
             'documents' => 'Загруженные документы',

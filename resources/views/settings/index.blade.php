@@ -31,8 +31,8 @@
                                     {{ $setting->name }}
                                 </a>
                             </td>
-                            <td>{{ $setting->document_type->value }}</td>
-                            <td>{{ $setting->document_format->value }}</td>
+                            <td>{{ __("enums.document_types.{$setting->document_type->value}") }}</td>
+                            <td>{{ __("enums.document_formats.{$setting->document_format->value}") }}</td>
                             <td>{{ $setting->created_at->format('d.m.Y') }}</td>
                             <td>
                                 <a href="{{ route('settings.edit', $setting) }}"

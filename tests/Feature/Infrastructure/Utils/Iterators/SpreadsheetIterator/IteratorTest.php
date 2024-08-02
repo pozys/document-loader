@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Infrastructure\Utils\Iterators\SpreadsheetIterator;
 
 use Tests\TestCase;
 use App\Domain\Enums\DocumentFormats;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Domain\Concerns\Services;
 
 use App\Domain\Concerns\Enums\SchemaComponentTypes;
 use Tests\TestCase;

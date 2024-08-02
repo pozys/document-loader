@@ -9,11 +9,6 @@ use Tests\TestCase;
 
 class UTDSummaryProviderTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testCorrectDocument(): void
     {
         $provider = app(UTDSummaryProvider::class);

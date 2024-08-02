@@ -46,3 +46,6 @@ start-frontend:
 
 build-frontend:
 	npm run build
+
+lint:
+	composer exec phpcs

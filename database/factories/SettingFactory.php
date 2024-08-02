@@ -4,12 +4,10 @@ namespace Database\Factories;
 
 use App\Domain\Enums\{DocumentFormats, DocumentTypes};
 use App\Domain\Models\Setting\Setting;
+use App\Domain\Models\Setting\ValueObjects\Settings;
 use App\Domain\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Model>
- */
 class SettingFactory extends Factory
 {
     protected $model = Setting::class;
@@ -22,5 +20,12 @@ class SettingFactory extends Factory
             'document_format' => DocumentFormats::Spreadsheet,
             'user_id' => User::factory(),
         ];
+    }
+
+    public function withEmptySettings(): self
+    {
+        return $this->state(
+            fn (array $attributes) => ['settings' => new Settings([], $attributes['document_format'])]
+        );
     }
 }

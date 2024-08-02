@@ -12,8 +12,6 @@ services:
       - host.docker.internal:host-gateway
     depends_on:
       - database
-    networks:
-      - app-network
 
   webserver:
     image: nginx
@@ -28,8 +26,6 @@ services:
       - ./external/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - application
-    networks:
-      - app-network
 
   database:
     image: postgres
@@ -41,12 +37,6 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - loader-pgdata:/var/lib/postgresql/data
-    networks:
-      - app-network
 
 volumes:
   loader-pgdata:
-
-networks:
-  app-network:
-    driver: bridge

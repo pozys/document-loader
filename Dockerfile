@@ -45,7 +45,7 @@ RUN chown -R ${USER_NAME}:${GROUP_NAME} /app && \
     chmod -R guo+w bootstrap/cache
 
 RUN composer install
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 EXPOSE 9000

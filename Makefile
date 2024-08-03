@@ -1,9 +1,6 @@
 console:
 	docker exec -it application php artisan tinker
 
-build:
-	docker compose build
-
 db-prepare:
 	php artisan migrate:fresh --force --seed
 
@@ -39,7 +36,7 @@ env-prepare:
 	cp -n .env.example .env || true
 
 key:
-	php artisan key:generate
+	php artisan key:generate --force
 
 test:
 	php artisan test

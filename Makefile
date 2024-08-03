@@ -2,10 +2,10 @@ console:
 	docker exec -it application php artisan tinker
 
 db-prepare:
-	php artisan migrate:fresh --force --seed
+	docker exec application php artisan migrate:fresh --force --seed
 
 db-migrate:
-	php artisan migrate --force && php artisan db:seed --force
+	docker exec application php artisan migrate --force && php artisan db:seed --force
 
 compose: compose-clear compose-setup compose-start
 
@@ -42,10 +42,10 @@ env-prepare:
 	cp -n .env.example .env || true
 
 key:
-	php artisan key:generate --force
+	docker exec application php artisan key:generate --force
 
 test:
-	php artisan test
+	docker exec application php artisan test
 
 start-frontend:
 	npm run dev

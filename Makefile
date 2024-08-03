@@ -27,7 +27,7 @@ compose-clear:
 compose-build:
 	docker compose build
 
-setup: env-prepare install key db-prepare
+setup: env-prepare install key db-prepare build-frontend
 
 install:
 	composer install
@@ -45,7 +45,7 @@ start-frontend:
 	npm run dev
 
 build-frontend:
-	npm run build
+	npm install && npm run build
 
 lint:
 	composer exec phpcs

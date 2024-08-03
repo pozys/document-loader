@@ -4,6 +4,9 @@ console:
 db-prepare:
 	php artisan migrate:fresh --force --seed
 
+db-migrate:
+	php artisan migrate --force && php artisan db:seed --force
+
 compose: compose-clear compose-setup compose-start
 
 compose-start:
@@ -30,6 +33,9 @@ compose-build:
 setup: env-prepare install key db-prepare build-frontend
 
 install:
+	composer install
+
+install-prod:
 	composer install
 
 env-prepare:

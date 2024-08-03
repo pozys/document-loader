@@ -12,6 +12,9 @@ compose: compose-clear compose-setup compose-start
 compose-start:
 	docker compose up --abort-on-container-exit
 
+compose-restart:
+	docker compose restart
+
 compose-setup: compose-build
 	docker compose run --rm application make setup
 

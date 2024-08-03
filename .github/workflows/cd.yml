@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
+          USERNAME: ${{ secrets.SSH_USERNAME }}
+          KEY: ${{ secrets.SSHKEY }}
+        with:
+          source: "."
+          target: ${{ vars.PATH_TO_APP }}
+
+      - name: deploy app
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          PATH_TO_APP: ${{ vars.PATH_TO_APP }}
+          SERVER_NAME: ${{ secrets.SERVER_NAME }}
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSHKEY }}
+          envs: PATH_TO_APP,SERVER_NAME
+          script: whoami # cd $PATH_TO_APP && sh ./deploy.sh $SERVER_NAME $PATH_TO_APP

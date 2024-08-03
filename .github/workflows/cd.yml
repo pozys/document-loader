@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deployment:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,4 +30,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
           envs: PATH_TO_APP,SERVER_NAME
-          script: whoami # cd $PATH_TO_APP && sh ./deploy.sh $SERVER_NAME $PATH_TO_APP
+          script: cd $PATH_TO_APP && sh ./deploy.sh $SERVER_NAME $PATH_TO_APP

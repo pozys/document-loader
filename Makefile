@@ -36,7 +36,7 @@ install:
 	composer install
 
 install-prod:
-	composer install
+	composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 env-prepare:
 	cp -n .env.example .env || true

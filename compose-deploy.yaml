@@ -1,0 +1,20 @@
+services:
+  application-deploy:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    depends_on:
+      - database-deploy
+
+  database-deploy:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - loader-pgdata:/var/lib/postgresql/data
+
+volumes:
+  loader-pgdata:

@@ -15,6 +15,9 @@ compose: compose-clear compose-setup compose-start db-prepare build-frontend
 compose-start:
 	docker compose up -d
 
+compose-deploy-start:
+	docker compose -f=compose-deploy.yaml -p=deploy up -d
+
 compose-restart:
 	docker compose restart
 
@@ -26,6 +29,9 @@ compose-stop:
 
 compose-down:
 	docker compose down --remove-orphans || true
+
+compose-deploy-down:
+	docker compose  -p=deploy down --remove-orphans || true
 
 compose-clear:
 	docker compose down -v --remove-orphans || true

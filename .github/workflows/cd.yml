@@ -46,3 +46,6 @@ jobs:
             cd $PATH_TO_APP
             ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
             ln -s $DIR $PATH_TO_APP/current
+            cd $DIR $PATH_TO_APP/current
+            make compose-stop
+            make compose-start

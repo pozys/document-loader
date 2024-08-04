@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create(self::TABLE_NAME, function (Blueprint $table) {
             $table->id();
-            $table->foreignId('author_id')->index();
+            $table->foreign('author_id')->references('id')->on('users')->index();
             $table->jsonb('settings');
             $table->jsonb('schema');
             $table->jsonb('content');

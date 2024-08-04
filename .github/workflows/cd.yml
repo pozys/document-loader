@@ -37,9 +37,10 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD
           script: |
-            cd $DIR
+            cd $PATH_TO_APP
             mkdir current || true
             mkdir previous || true
+            cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
             sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD

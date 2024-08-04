@@ -35,7 +35,7 @@ jobs:
           port: ${{ secrets.PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          envs: PATH_TO_APP,SERVER_NAME,DIR
+          envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD
           script: |
             cd $DIR
             chmod -R guo+w storage

@@ -13,3 +13,4 @@ make build-frontend
 make db-migrate
 make db-seed
 make compose-deploy-down
+sleep 5

@@ -4,31 +4,45 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deployment:
     runs-on: ubuntu-latest
+
+    env:
+      DIR: ${{ vars.PATH_TO_APP }}/${{ github.run_id }}
 
     steps:
       - uses: actions/checkout@v4
       - name: Copy repository contents via scp
         uses: appleboy/scp-action@master
-        env:
-          HOST: ${{ secrets.HOST }}
-          PORT: ${{ secrets.PORT }}
-          USERNAME: ${{ secrets.SSH_USERNAME }}
-          KEY: ${{ secrets.SSHKEY }}
         with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSHKEY }}
           source: "."
-          target: ${{ vars.PATH_TO_APP }}
+          target: ${{ env.DIR }}
 
       - name: deploy app
         uses: appleboy/ssh-action@v1.0.3
         env:
           PATH_TO_APP: ${{ vars.PATH_TO_APP }}
           SERVER_NAME: ${{ secrets.SERVER_NAME }}
+          APP_URL: ${{ vars.APP_URL }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DIR: ${{ env.DIR }}
+          APP_ENV: ${{ vars.APP_ENV }}
+          APP_DEBUG: ${{ vars.APP_DEBUG }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          envs: PATH_TO_APP,SERVER_NAME
-          script: whoami # cd $PATH_TO_APP && sh ./deploy.sh $SERVER_NAME $PATH_TO_APP
+          envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD,APP_ENV,APP_DEBUG
+          script: |
+            cd $DIR
+            chmod -R guo+w storage
+            chmod -R guo+w bootstrap/cache
+            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
+            cd $PATH_TO_APP
+            ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
+            ln -s $DIR $PATH_TO_APP/current

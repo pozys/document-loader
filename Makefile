@@ -2,12 +2,18 @@ console:
 	docker exec -it application php artisan tinker
 
 db-prepare:
-	php artisan migrate:fresh --force --seed
+	docker exec application php artisan migrate:fresh --force --seed
 
-compose: compose-clear compose-setup compose-start
+db-migrate:
+	docker exec application php artisan migrate --force
+
+db-seed:
+	docker exec application php artisan db:seed --force
+
+compose: compose-clear compose-setup compose-start db-prepare build-frontend
 
 compose-start:
-	docker compose up --abort-on-container-exit
+	docker compose up -d
 
 compose-restart:
 	docker compose restart
@@ -27,10 +33,13 @@ compose-clear:
 compose-build:
 	docker compose build
 
-setup: env-prepare install key db-prepare build-frontend
+setup: env-prepare install key
 
 install:
 	composer install
+
+install-prod:
+	composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
 env-prepare:
 	cp -n .env.example .env || true
@@ -39,7 +48,7 @@ key:
 	php artisan key:generate --force
 
 test:
-	php artisan test
+	docker exec application php artisan test
 
 start-frontend:
 	npm run dev

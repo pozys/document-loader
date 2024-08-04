@@ -30,12 +30,14 @@ jobs:
           APP_URL: ${{ vars.APP_URL }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DIR: ${{ env.DIR }}
+          APP_ENV: ${{ vars.APP_ENV }}
+          APP_DEBUG: ${{ vars.APP_DEBUG }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD
+          envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD,APP_ENV,APP_DEBUG
           script: |
             cd $PATH_TO_APP
             mkdir current || true
@@ -43,7 +45,7 @@ jobs:
             cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
-            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD
+            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
             cd ../
             ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
             ln -s $DIR $PATH_TO_APP/current"

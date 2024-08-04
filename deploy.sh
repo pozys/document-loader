@@ -8,7 +8,8 @@ sudo sed -i -- "s|%APP_DEBUG%|$6|g" .env
 
 make install-prod
 make key
-make compose-restart
+make compose-stop
+make compose-start
 make db-migrate
 make db-seed
 make build-frontend

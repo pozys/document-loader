@@ -29,7 +29,7 @@ jobs:
           SERVER_NAME: ${{ secrets.SERVER_NAME }}
           APP_URL: ${{ vars.APP_URL }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DIR: ${{ vars.DIR }}
+          DIR: ${{ env.DIR }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}

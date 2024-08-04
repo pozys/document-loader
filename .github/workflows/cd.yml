@@ -32,6 +32,7 @@ jobs:
           DIR: ${{ env.DIR }}
           APP_ENV: ${{ vars.APP_ENV }}
           APP_DEBUG: ${{ vars.APP_DEBUG }}
+          UNLINKED: $(readlink -f previous)
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
@@ -42,7 +43,10 @@ jobs:
             cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
-            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
+            sh ./deploy-step1.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
             cd $PATH_TO_APP
+            export UNLINKED=$(readlink -f previous)
             ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
             ln -s $DIR $PATH_TO_APP/current
+            cd $PATH_TO_APP/current
+            sh ./deploy-step2.sh

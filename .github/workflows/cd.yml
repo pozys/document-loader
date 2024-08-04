@@ -38,3 +38,5 @@ jobs:
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
             sh ./deploy.sh $SERVER_NAME $PATH_TO_APP $APP_URL $DB_PASSWORD
+            cd $DIR
+            pwd

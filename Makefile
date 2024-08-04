@@ -13,7 +13,7 @@ db-seed:
 compose: compose-clear compose-setup compose-start db-prepare build-frontend
 
 compose-start:
-	docker compose up -d --abort-on-container-exit
+	docker compose up -d
 
 compose-restart:
 	docker compose restart

@@ -35,14 +35,6 @@
             @enderror
         </div>
 
-        <div class="w-full flex items-center">
-            <div class="ml-auto">
-                <a href="{{ route('settings.create') }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                    {{ __('setting.index.create') }}</a>
-            </div>
-        </div>
-
         <table class="mt-4">
             <thead class="border-b-2 border-solid border-black text-left">
                 <tr>

@@ -40,12 +40,12 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD,APP_ENV,APP_DEBUG
           script: |
-            export UNLINKED=$(readlink -f previous)
             cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
             sh ./deploy-step1.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
             cd $PATH_TO_APP
+            export UNLINKED=$(readlink -f previous)
             ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
             ln -s $DIR $PATH_TO_APP/current
             cd $PATH_TO_APP/current

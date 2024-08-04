@@ -45,7 +45,7 @@ env-prepare:
 	cp -n .env.example .env || true
 
 key:
-	docker exec application php artisan key:generate --force
+	php artisan key:generate --force
 
 test:
 	docker exec application php artisan test

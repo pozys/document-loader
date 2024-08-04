@@ -2,15 +2,15 @@ console:
 	docker exec -it application php artisan tinker
 
 db-prepare:
-	php artisan migrate:fresh --force --seed
+	docker exec application php artisan migrate:fresh --force --seed
 
 db-migrate:
-	php artisan migrate --force
+	docker exec application php artisan migrate --force
 
 db-seed:
-	php artisan db:seed --force
+	docker exec application php artisan db:seed --force
 
-compose: compose-clear compose-setup compose-start
+compose: compose-clear compose-setup compose-start db-prepare build-frontend
 
 compose-start:
 	docker compose up --abort-on-container-exit
@@ -33,7 +33,7 @@ compose-clear:
 compose-build:
 	docker compose build
 
-setup: env-prepare install key db-prepare build-frontend
+setup: env-prepare install key
 
 install:
 	composer install

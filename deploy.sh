@@ -10,6 +10,6 @@ make install-prod
 make key
 make compose-stop
 make compose-start
+make build-frontend
 make db-migrate
 make db-seed
-make build-frontend

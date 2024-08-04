@@ -46,6 +46,6 @@ jobs:
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
             sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD $APP_ENV $APP_DEBUG
-            cd ../
+            cd $PATH_TO_APP
             ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
             ln -s $DIR $PATH_TO_APP/current"

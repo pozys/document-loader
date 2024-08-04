@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DIR: ${{ github.run_id }}
+      DIR: ${{ vars.PATH_TO_APP }}/${{ github.run_id }}
 
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSHKEY }}
           source: "."
-          target: ${{ vars.PATH_TO_APP }}/${{ env.DIR }}
+          target: ${{ env.DIR }}
 
       - name: deploy app
         uses: appleboy/ssh-action@v1.0.3
@@ -37,10 +37,10 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           envs: PATH_TO_APP,SERVER_NAME,DIR
           script: |
-            cd $PATH_TO_APP
+            cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache
-            sh ./deploy.sh $SERVER_NAME $PATH_TO_APP $APP_URL $DB_PASSWORD
-            mkdir $DIR
-            cd $_
-            pwd
+            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD
+            cd ../
+            ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
+            ln -s $DIR $PATH_TO_APP/current"

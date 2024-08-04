@@ -40,6 +40,7 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD,APP_ENV,APP_DEBUG
           script: |
+            export UNLINKED=$(readlink -f previous)
             cd $DIR
             chmod -R guo+w storage
             chmod -R guo+w bootstrap/cache

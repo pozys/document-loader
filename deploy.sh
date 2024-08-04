@@ -1,4 +1,3 @@
-set -e
 make env-prepare
 sudo sed -i -- "s|%SERVER_NAME%|$1|g" $2/external/nginx/conf.d/app.conf
 sudo sed -i -- "s|%APP_URL%|$3|g" .env

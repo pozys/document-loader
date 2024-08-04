@@ -38,10 +38,9 @@ jobs:
           envs: PATH_TO_APP,SERVER_NAME,DIR,APP_URL,DB_PASSWORD
           script: |
             cd $DIR
-            ls -la
-            # chmod -R guo+w storage
-            # chmod -R guo+w bootstrap/cache
-            # sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD
-            # cd ../
-            # ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
-            # ln -s $DIR $PATH_TO_APP/current"
+            chmod -R guo+w storage
+            chmod -R guo+w bootstrap/cache
+            sh ./deploy.sh $SERVER_NAME $DIR $APP_URL $DB_PASSWORD
+            cd ../
+            ( [ ! -d $PATH_TO_APP/current ] || mv -Tf $PATH_TO_APP/current $PATH_TO_APP/previous )
+            ln -s $DIR $PATH_TO_APP/current"
